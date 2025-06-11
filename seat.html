@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IndiGo Seat Selection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f6ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      padding: 30px 5%;
+      background-color: white;
+    }
+
+    header h1 {
+      margin-top: 25px;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    header h1 span {
+      color: green;
+    }
+
+    .trip-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .header {
+      background-color: white;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .TopBar {
+      background-color: blue;
+      width: 300px;
+      height: 30px;
+      margin: 30px auto;
+      color: white;
+      border-radius: 30px;
+      text-align: center;
+      line-height: 30px;
+    }
+
+    .container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .seating img {
+      width: 200px;
+      border: 3px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border 0.2s ease;
+    }
+
+    .seating img.selected {
+      border: 3px solid #007bff;
+    }
+
+    .summary {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    .options {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .options select {
+      margin: 10px;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .finalOutput {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .passenger-selection {
+      margin: 20px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .continue-button {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background-color: #3c3cdb;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .continue-button:hover {
+      background-color: #2a2a9e;
+    }
+
+    .continue-button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="trip-info" id="tripDetails">
+      <div>Loading route...</div>
+      <div>Loading date...</div>
+      <div>Loading passengers...</div>
+    </div>
+
+    <h1>Select seats for your flight from <span>Delhi</span> to <span>Mumbai</span></h1>
+  </header>
+
+<div class="header">
+  <div class="logo">IndiGo ✈</div>
+  <a href="#" class="back-link">← BACK TO SEARCH RESULTS</a>
+</div>
+
+<div class="TopBar">DEL --- BOM</div>
+
+<div id="passengerSelections">
+  <!-- Passenger selections will be dynamically added here -->
+</div>
+
+<button class="continue-button" onclick="saveSeatSelections()">Continue to Summary</button>
+
+<script>
+  let passengerCount = 0;
+  let seatSelections = [];
+
+  function updateTripInfo() {
+    const tripDetails = document.getElementById('tripDetails');
+    const flightDetails = JSON.parse(localStorage.getItem('selectedFlight') || '{}');
+    const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+    const latestSubmission = submissions[submissions.length - 1];
+    
+    if (flightDetails.route) {
+      tripDetails.innerHTML = `
+        <div>${flightDetails.route.from} → ${flightDetails.route.to}</div>
+        <div>${new Date(flightDetails.timestamp).toLocaleDateString()}</div>
+        <div>${latestSubmission ? latestSubmission.passengers.length : 1} Passenger(s)</div>
+      `;
+
+      // Update the header title
+      const headerTitle = document.querySelector('header h1');
+      if (headerTitle) {
+        headerTitle.innerHTML = `Select seats for your flight from <span>${flightDetails.route.from}</span> to <span>${flightDetails.route.to}</span>`;
+      }
+    }
+  }
+
+  window.onload = function() {
+    updateTripInfo();
+    const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+    const latestSubmission = submissions[submissions.length - 1];
+    if (latestSubmission) {
+      passengerCount = latestSubmission.passengers.length;
+      generatePassengerSelections();
+    }
+  };
+
+  function generatePassengerSelections() {
+    const container = document.getElementById('passengerSelections');
+    container.innerHTML = '';
+
+    for (let i = 1; i <= passengerCount; i++) {
+      const submission = document.createElement('div');
+      submission.className = 'passenger-selection';
+      submission.innerHTML = `
+        <h3>Passenger ${i}</h3>
+        <div class="container">
+          <div class="seating">
+            <img src="front.jpg" alt="Front" data-section="Front" data-passenger="${i}">
+            <img src="middle.jpg" alt="Middle" data-section="Middle" data-passenger="${i}">
+            <img src="back.jpg" alt="Back" data-section="Back" data-passenger="${i}">
+          </div>
+          <div class="summary">
+            <h3>Selection Summary</h3>
+            <p id="selectedSection${i}">No section selected</p>
+            <div class="options">
+              <label for="seatType${i}">Seat Preference:</label>
+              <select id="seatType${i}">
+                <option value="Aisle">Aisle</option>
+                <option value="Middle">Middle</option>
+                <option value="Window">Window</option>
+              </select>
+            </div>
+            <div class="finalOutput" id="seatSummary${i}"></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(submission);
+    }
+
+    // Add event listeners to all new images
+    document.querySelectorAll('.seating img').forEach(img => {
+      img.addEventListener('click', function() {
+        const passengerNum = this.getAttribute('data-passenger');
+        const section = this.getAttribute('data-section');
+        
+        // Remove selected class from all images for this passenger
+        document.querySelectorAll(`.seating img[data-passenger="${passengerNum}"]`).forEach(i => {
+          i.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked image
+        this.classList.add('selected');
+        
+        // Update summary
+        document.getElementById(`selectedSection${passengerNum}`).innerText = `Selected Section: ${section}`;
+        updatePassengerSummary(passengerNum);
+      });
+    });
+
+    // Add event listeners to all seat type selects
+    document.querySelectorAll('[id^="seatType"]').forEach(select => {
+      select.addEventListener('change', function() {
+        const passengerNum = this.id.replace('seatType', '');
+        updatePassengerSummary(passengerNum);
+      });
+    });
+  }
+
+  function updatePassengerSummary(passengerNum) {
+    const section = document.getElementById(`selectedSection${passengerNum}`).innerText.replace('Selected Section: ', '');
+    const type = document.getElementById(`seatType${passengerNum}`).value;
+    
+    if (section !== 'No section selected') {
+      document.getElementById(`seatSummary${passengerNum}`).innerText = 
+        `You've chosen a ${type} seat in the ${section} section.`;
+    }
+  }
+
+  function saveSeatSelections() {
+    const selections = [];
+    let isValid = true;
+
+    for (let i = 1; i <= passengerCount; i++) {
+      const section = document.getElementById(`selectedSection${i}`).innerText.replace('Selected Section: ', '');
+      const type = document.getElementById(`seatType${i}`).value;
+
+      if (section === 'No section selected') {
+        alert(`Please select a seat for Passenger ${i}`);
+        isValid = false;
+        break;
+      }
+
+      selections.push({
+        passengerNumber: i,
+        section: section,
+        seatType: type
+      });
+    }
+
+    if (isValid) {
+      // Get existing submissions
+      const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+      const latestSubmission = submissions[submissions.length - 1];
+      
+      // Add seat selections to the latest submission
+      latestSubmission.seatSelections = selections;
+      submissions[submissions.length - 1] = latestSubmission;
+      
+      // Save back to localStorage
+      localStorage.setItem('passengerSubmissions', JSON.stringify(submissions));
+      
+      // Redirect to summary page
+      window.location.href = 'summary.html';
+    }
+  }
+</script>
+
+</body>
+</html>

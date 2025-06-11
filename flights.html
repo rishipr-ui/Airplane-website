@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IndiGo Clone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f0f8ff;
+      color: #000;
+    }
+
+    header {
+      padding: 30px 5%;
+      background-color: white;
+    }
+
+    header h1 {
+      margin-top:25px;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    header h1 span {
+      color: green;
+    }
+
+    .trip-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .date-selector {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 20px 5%;
+      background-color: white;
+      border-top: 1px solid #ccc;
+    }
+
+    .date-box {
+      text-align: center;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      min-width: 100px;
+    }
+
+    .date-box.active {
+      background-color: #def2ff;
+      border-color: #007bff;
+    }
+
+    .filters {
+      display: flex;
+      gap: 15px;
+      padding: 10px 5%;
+      background-color: #f5faff;
+    }
+
+    .filters button {
+      padding: 8px 14px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .flight-list {
+      padding: 20px 5%;
+    }
+
+    .flight-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .flight-details {
+      flex: 1;
+    }
+
+    .flight-details p {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+   .flights-list {
+        list-style: none;
+        padding: 0;
+    }
+    .flights-list li {
+        background: white;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        text-align: left;
+        border-left: 5px solid #007bff;
+        
+    }
+    .price-info {
+      text-align: right;
+    }
+
+    .price-info .price {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .price-info .blu {
+      font-size: 12px;
+      color: green;
+      margin-top: 4px;
+    }
+
+    .fare-hold {
+      text-align: center;
+      background-color: #e6f2ff;
+      padding: 15px;
+      font-size: 14px;
+      margin: 0 5%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="trip-info" id="tripDetails">
+      <div>Loading route...</div>
+      <div>Loading date...</div>
+      <div>Loading passengers...</div>
+    </div>
+
+    <h1>Choose your preferred flight from <span>Delhi</span> to <span>Mumbai</span></h1>
+  </header>
+
+  <section class="date-selector">
+    <div class="date-box one">Sun, 08 Jun<br>--</div>
+    <div class="date-box active two">Mon, 09 Jun<br>₹8,817</div>
+    <div class="date-box three">Tue, 10 Jun<br>₹7,558</div>
+  </section>
+
+  <!-- <section class="filters">
+    <button>Stretch | Business</button>
+    <button>Non-stop</button>
+    <button>Low cost first</button>
+    <button>Early departures</button>
+  </section> -->
+
+  <!-- <section class="flight-list">
+    <div class="flight-card">
+      <div class="flight-details">
+        <p><strong>6E 6114</strong></p>
+        <p>22:00 DEL, T1 → 00:20 BOM, T2</p>
+
+        <p>Non-stop | Duration: 2h 20m</p>
+      </div>
+      <div class="price-info">
+        <div class="price">₹8,817 (Economy)</div>
+        <div class="blu">+ Earn 941 IndiGo BluChips</div>
+        <br>
+        <div class="price">₹20,107 (Business)</div>
+        <div class="blu">+ Earn 2,091 IndiGo BluChips</div>
+      </div>
+    </div>
+
+    <div class="fare-hold">
+      🔒 6E Fare Hold | Hold fares for up to 72 hours, starting at just ₹99*
+    </div>
+
+    <div class="flight-card">
+      <div class="flight-details">
+        <p><strong>6E 519</strong></p>
+        <p>23:30 DEL, T1 → 01:45 BOM, T2</p>
+        <p>Non-stop | Duration: 2h 15m</p>
+      </div>
+      <div class="price-info">
+        <div class="price">₹8,817 (Economy)</div>
+        <div class="blu">+ Earn 941 IndiGo BluChips</div>
+        <br>
+        <div class="price">₹20,107 (Business)</div>
+        <div class="blu">+ Earn 2,091 IndiGo BluChips</div>
+      </div>
+    </div>
+  </section> -->
+
+  <div id="flightsPage" class="container hidden">
+    <ul class="flights-list">
+      <li data-from="Kochi, COK" data-to="Mumbai, BOM" onclick="redirectToAirplane(this)"><strong>Flight 6E-591</strong><br>Departure: 7:34 AM - Kochi, COK <br>Arrival: 9:08 AM - Mumbai, BOM </li>
+      <li data-from="Srinagar, SXR" data-to="Coimbatore, CJB"><strong>Flight IX-791</strong><br>Departure: 12:18 PM - Srinagar, SXR <br>Arrival: 3:30 PM - Coimbatore, CJB </li>
+      <li data-from="Visakhapatnam, VTZ" data-to="Mumbai, BOM"><strong>Flight AI-932</strong><br>Departure: 3:44 PM - Visakhapatnam, VTZ <br>Arrival: 4:47 PM - Mumbai, BOM </li>
+      <li data-from="Lucknow, LKO" data-to="Pune, PNQ"><strong>Flight UK-227</strong><br>Departure: 12:54 PM - Lucknow, LKO <br>Arrival: 2:27 PM - Pune, PNQ </li>
+      <li data-from="Amritsar, ATQ" data-to="Delhi, DEL"><strong>Flight IX-248</strong><br>Departure: 10:07 AM - Amritsar, ATQ <br>Arrival: 12:23 PM - Delhi, DEL </li>
+      <li data-from="Amritsar, ATQ" data-to="Nagpur, NAG"><strong>Flight UK-792</strong><br>Departure: 8:43 AM - Amritsar, ATQ <br>Arrival: 10:16 AM - Nagpur, NAG </li>
+      <li data-from="Surat, STV" data-to="Chennai, MAA"><strong>Flight IX-536</strong><br>Departure: 2:49 PM - Surat, STV <br>Arrival: 3:49 PM - Chennai, MAA </li>
+      <li data-from="Mumbai, BOM" data-to="Patna, PAT"><strong>Flight SG-439</strong><br>Departure: 6:27 AM - Mumbai, BOM <br>Arrival: 8:17 AM - Patna, PAT </li>
+      <li data-from="Visakhapatnam, VTZ" data-to="Kolkata, CCU"><strong>Flight SG-461</strong><br>Departure: 8:09 AM - Visakhapatnam, VTZ <br>Arrival: 9:45 AM - Kolkata, CCU </li>
+      <li data-from="Visakhapatnam, VTZ" data-to="Kochi, COK"><strong>Flight 6E-240</strong><br>Departure: 6:45 AM - Visakhapatnam, VTZ <br>Arrival: 8:02 AM - Kochi, COK </li>
+      <li data-from="Amritsar, ATQ" data-to="Visakhapatnam, VTZ"><strong>Flight AI-421</strong><br>Departure: 2:24 PM - Amritsar, ATQ <br>Arrival: 5:28 PM - Visakhapatnam, VTZ </li>
+      <li data-from="Bhubaneswar, BBI" data-to="Lucknow, LKO"><strong>Flight SG-650</strong><br>Departure: 11:53 AM - Bhubaneswar, BBI <br>Arrival: 2:59 PM - Lucknow, LKO </li>
+      <li data-from="Lucknow, LKO" data-to="Dehradun, DED"><strong>Flight UK-973</strong><br>Departure: 6:37 AM - Lucknow, LKO <br>Arrival: 10:29 AM - Dehradun, DED </li>
+      <li data-from="Delhi, DEL" data-to="Port Blair, IXZ"><strong>Flight AI-488</strong><br>Departure: 11:24 AM - Delhi, DEL <br>Arrival: 3:04 PM - Port Blair, IXZ </li>
+      <li data-from="Indore, IDR" data-to="Delhi, DEL"><strong>Flight IX-656</strong><br>Departure: 6:56 AM - Indore, IDR <br>Arrival: 10:29 AM - Delhi, DEL </li>
+      <li data-from="Surat, STV" data-to="Pune, PNQ"><strong>Flight UK-328</strong><br>Departure: 10:35 AM - Surat, STV <br>Arrival: 1:17 PM - Pune, PNQ </li>
+      <li data-from="Patna, PAT" data-to="Ahmedabad, AMD"><strong>Flight AI-994</strong><br>Departure: 5:50 AM - Patna, PAT <br>Arrival: 9:24 AM - Ahmedabad, AMD </li>
+      <li data-from="Varanasi, VNS" data-to="Delhi, DEL"><strong>Flight 6E-603</strong><br>Departure: 9:13 AM - Varanasi, VNS <br>Arrival: 11:44 AM - Delhi, DEL </li>
+      <li data-from="Bengaluru, BLR" data-to="Amritsar, ATQ"><strong>Flight AI-507</strong><br>Departure: 8:24 AM - Bengaluru, BLR <br>Arrival: 11:33 AM - Amritsar, ATQ </li>
+      <li data-from="Bengaluru, BLR" data-to="Patna, PAT"><strong>Flight IX-631</strong><br>Departure: 10:08 AM - Bengaluru, BLR <br>Arrival: 11:26 AM - Patna, PAT </li>
+      <li data-from="Delhi, DEL" data-to="Surat, STV"><strong>Flight SG-256</strong><br>Departure: 11:01 AM - Delhi, DEL <br>Arrival: 1:09 PM - Surat, STV </li>
+      <li data-from="Ranchi, IXR" data-to="Dehradun, DED"><strong>Flight UK-210</strong><br>Departure: 11:52 AM - Ranchi, IXR <br>Arrival: 2:42 PM - Dehradun, DED </li>
+      <li data-from="Chandigarh, IXC" data-to="Coimbatore, CJB"><strong>Flight 6E-407</strong><br>Departure: 7:24 AM - Chandigarh, IXC <br>Arrival: 10:36 AM - Coimbatore, CJB </li>
+      <li data-from="Coimbatore, CJB" data-to="Mumbai, BOM"><strong>Flight AI-800</strong><br>Departure: 7:39 AM - Coimbatore, CJB <br>Arrival: 9:31 AM - Mumbai, BOM </li>
+      <li data-from="Ranchi, IXR" data-to="Indore, IDR"><strong>Flight AI-390</strong><br>Departure: 5:41 AM - Ranchi, IXR <br>Arrival: 8:59 AM - Indore, IDR </li>
+      <li data-from="Hyderabad, HYD" data-to="Varanasi, VNS"><strong>Flight UK-305</strong><br>Departure: 3:35 PM - Hyderabad, HYD <br>Arrival: 6:03 PM - Varanasi, VNS </li>
+      <li data-from="Indore, IDR" data-to="Surat, STV"><strong>Flight AI-961</strong><br>Departure: 8:36 AM - Indore, IDR <br>Arrival: 12:12 PM - Surat, STV </li>
+      <li data-from="Chennai, MAA" data-to="Coimbatore, CJB"><strong>Flight UK-875</strong><br>Departure: 10:24 AM - Chennai, MAA <br>Arrival: 12:06 PM - Coimbatore, CJB </li>
+      <li data-from="Nagpur, NAG" data-to="Kochi, COK"><strong>Flight SG-586</strong><br>Departure: 8:41 AM - Nagpur, NAG <br>Arrival: 10:04 AM - Kochi, COK </li>
+      <li data-from="Patna, PAT" data-to="Delhi, DEL"><strong>Flight SG-793</strong><br>Departure: 10:54 AM - Patna, PAT <br>Arrival: 12:14 PM - Delhi, DEL </li>
+      <li data-from="Visakhapatnam, VTZ" data-to="Thiruvananthapuram, TRV"><strong>Flight SG-663</strong><br>Departure: 8:18 AM - Visakhapatnam, VTZ <br>Arrival: 10:15 AM - Thiruvananthapuram, TRV </li>
+      <li data-from="Guwahati, GAU" data-to="Delhi, DEL"><strong>Flight UK-676</strong><br>Departure: 3:50 PM - Guwahati, GAU <br>Arrival: 6:35 PM - Delhi, DEL </li>
+      <li data-from="Kochi, COK" data-to="Goa, GOI"><strong>Flight IX-486</strong><br>Departure: 10:27 AM - Kochi, COK <br>Arrival: 12:05 PM - Goa, GOI </li>
+      <li data-from="Indore, IDR" data-to="Guwahati, GAU"><strong>Flight SG-887</strong><br>Departure: 12:34 PM - Indore, IDR <br>Arrival: 2:56 PM - Guwahati, GAU </li>
+      <li data-from="Kolkata, CCU" data-to="Ranchi, IXR"><strong>Flight AI-747</strong><br>Departure: 7:09 AM - Kolkata, CCU <br>Arrival: 8:57 AM - Ranchi, IXR </li>
+      <li data-from="Bengaluru, BLR" data-to="Bhubaneswar, BBI"><strong>Flight UK-342</strong><br>Departure: 1:24 PM - Bengaluru, BLR <br>Arrival: 4:05 PM - Bhubaneswar, BBI </li>
+      <li data-from="Srinagar, SXR" data-to="Chandigarh, IXC"><strong>Flight 6E-837</strong><br>Departure: 11:20 AM - Srinagar, SXR <br>Arrival: 1:47 PM - Chandigarh, IXC </li>
+      <li data-from="Bhubaneswar, BBI" data-to="Delhi, DEL"><strong>Flight IX-279</strong><br>Departure: 12:59 PM - Bhubaneswar, BBI <br>Arrival: 3:26 PM - Delhi, DEL </li>
+      <li data-from="Lucknow, LKO" data-to="Bhubaneswar, BBI"><strong>Flight SG-400</strong><br>Departure: 7:04 AM - Lucknow, LKO <br>Arrival: 9:16 AM - Bhubaneswar, BBI </li>
+      <li data-from="Delhi, DEL" data-to="Hyderabad, HYD"><strong>Flight UK-331</strong><br>Departure: 12:58 PM - Delhi, DEL <br>Arrival: 3:42 PM - Hyderabad, HYD </li>
+      <li data-from="Hyderabad, HYD" data-to="Goa, GOI"><strong>Flight 6E-953</strong><br>Departure: 8:33 AM - Hyderabad, HYD <br>Arrival: 11:52 AM - Goa, GOI </li>
+      <li data-from="Surat, STV" data-to="Thiruvananthapuram, TRV"><strong>Flight UK-718</strong><br>Departure: 12:23 PM - Surat, STV <br>Arrival: 3:52 PM - Thiruvananthapuram, TRV </li>
+      <li data-from="Delhi, DEL" data-to="Ahmedabad, AMD"><strong>Flight SG-432</strong><br>Departure: 9:02 AM - Delhi, DEL <br>Arrival: 12:24 PM - Ahmedabad, AMD </li>
+      <li data-from="Kochi, COK" data-to="Patna, PAT"><strong>Flight IX-609</strong><br>Departure: 10:25 AM - Kochi, COK <br>Arrival: 1:15 PM - Patna, PAT </li>
+      <li data-from="Patna, PAT" data-to="Ahmedabad, AMD"><strong>Flight IX-899</strong><br>Departure: 4:18 PM - Patna, PAT <br>Arrival: 8:18 PM - Ahmedabad, AMD </li>
+      <li data-from="Goa, GOI" data-to="Bengaluru, BLR"><strong>Flight UK-307</strong><br>Departure: 10:39 AM - Goa, GOI <br>Arrival: 1:10 PM - Bengaluru, BLR </li>
+      <li data-from="Dehradun, DED" data-to="Coimbatore, CJB"><strong>Flight AI-666</strong><br>Departure: 5:01 AM - Dehradun, DED <br>Arrival: 7:12 AM - Coimbatore, CJB </li>
+      <li data-from="Kolkata, CCU" data-to="Ahmedabad, AMD"><strong>Flight IX-587</strong><br>Departure: 3:26 PM - Kolkata, CCU <br>Arrival: 7:20 PM - Ahmedabad, AMD </li>
+      <li data-from="Patna, PAT" data-to="Delhi, DEL"><strong>Flight UK-493</strong><br>Departure: 5:16 AM - Patna, PAT <br>Arrival: 7:44 AM - Delhi, DEL </li>
+      <li data-from="Patna, PAT" data-to="Port Blair, IXZ"><strong>Flight UK-565</strong><br>Departure: 8:52 AM - Patna, PAT <br>Arrival: 10:42 AM - Port Blair, IXZ </li>
+      <li data-from="Ranchi, IXR" data-to="Dehradun, DED"><strong>Flight AI-562</strong><br>Departure: 12:01 PM - Ranchi, IXR <br>Arrival: 2:04 PM - Dehradun, DED </li>
+      <li data-from="Port Blair, IXZ" data-to="Dehradun, DED"><strong>Flight SG-170</strong><br>Departure: 1:46 PM - Port Blair, IXZ <br>Arrival: 4:46 PM - Dehradun, DED </li>
+      <li data-from="Patna, PAT" data-to="Chandigarh, IXC"><strong>Flight SG-898</strong><br>Departure: 9:25 AM - Patna, PAT <br>Arrival: 11:54 AM - Chandigarh, IXC </li>
+      <li data-from="Surat, STV" data-to="Kolkata, CCU"><strong>Flight 6E-746</strong><br>Departure: 1:43 PM - Surat, STV <br>Arrival: 3:01 PM - Kolkata, CCU </li>
+      <li data-from="Hyderabad, HYD" data-to="Goa, GOI"><strong>Flight SG-479</strong><br>Departure: 9:29 AM - Hyderabad, HYD <br>Arrival: 11:04 AM - Goa, GOI </li>
+      <li data-from="Indore, IDR" data-to="Ranchi, IXR"><strong>Flight UK-731</strong><br>Departure: 1:32 PM - Indore, IDR <br>Arrival: 3:08 PM - Ranchi, IXR </li>
+      <li data-from="Kochi, COK" data-to="Srinagar, SXR"><strong>Flight IX-160</strong><br>Departure: 1:46 PM - Kochi, COK <br>Arrival: 4:12 PM - Srinagar, SXR </li>
+      <li data-from="Ahmedabad, AMD" data-to="Coimbatore, CJB"><strong>Flight UK-658</strong><br>Departure: 9:19 AM - Ahmedabad, AMD <br>Arrival: 11:41 AM - Coimbatore, CJB </li>
+      <li data-from="Varanasi, VNS" data-to="Chandigarh, IXC"><strong>Flight AI-439</strong><br>Departure: 1:29 PM - Varanasi, VNS <br>Arrival: 3:37 PM - Chandigarh, IXC </li>
+      <li data-from="Lucknow, LKO" data-to="Jaipur, JAI"><strong>Flight IX-819</strong><br>Departure: 2:57 PM - Lucknow, LKO <br>Arrival: 6:15 PM - Jaipur, JAI </li>
+      <li data-from="Hyderabad, HYD" data-to="Jaipur, JAI"><strong>Flight AI-814</strong><br>Departure: 10:17 AM - Hyderabad, HYD <br>Arrival: 11:28 AM - Jaipur, JAI </li>
+      <li data-from="Thiruvananthapuram, TRV" data-to="Coimbatore, CJB"><strong>Flight IX-730</strong><br>Departure: 11:23 AM - Thiruvananthapuram, TRV <br>Arrival: 1:07 PM - Coimbatore, CJB </li>
+      <li data-from="Bengaluru, BLR" data-to="Thiruvananthapuram, TRV"><strong>Flight SG-279</strong><br>Departure: 5:38 AM - Bengaluru, BLR <br>Arrival: 9:10 AM - Thiruvananthapuram, TRV </li>
+      <li data-from="Jaipur, JAI" data-to="Varanasi, VNS"><strong>Flight IX-478</strong><br>Departure: 2:32 PM - Jaipur, JAI <br>Arrival: 6:01 PM - Varanasi, VNS </li>
+      <li data-from="Goa, GOI" data-to="Kolkata, CCU"><strong>Flight AI-317</strong><br>Departure: 4:42 PM - Goa, GOI <br>Arrival: 7:10 PM - Kolkata, CCU </li>
+      <li data-from="Guwahati, GAU" data-to="Delhi, DEL"><strong>Flight UK-942</strong><br>Departure: 7:14 AM - Guwahati, GAU <br>Arrival: 9:31 AM - Delhi, DEL </li>
+      <li data-from="Bhubaneswar, BBI" data-to="Chennai, MAA"><strong>Flight UK-851</strong><br>Departure: 3:33 PM - Bhubaneswar, BBI <br>Arrival: 5:39 PM - Chennai, MAA </li>
+      <li data-from="Visakhapatnam, VTZ" data-to="Pune, PNQ"><strong>Flight 6E-357</strong><br>Departure: 8:02 AM - Visakhapatnam, VTZ <br>Arrival: 12:00 PM - Pune, PNQ </li>
+      <li data-from="Lucknow, LKO" data-to="Goa, GOI"><strong>Flight SG-272</strong><br>Departure: 2:07 PM - Lucknow, LKO <br>Arrival: 4:49 PM - Goa, GOI </li>
+      <li data-from="Patna, PAT" data-to="Guwahati, GAU"><strong>Flight 6E-522</strong><br>Departure: 3:20 PM - Patna, PAT <br>Arrival: 6:48 PM - Guwahati, GAU </li>
+      <li data-from="Goa, GOI" data-to="Varanasi, VNS"><strong>Flight SG-110</strong><br>Departure: 9:07 AM - Goa, GOI <br>Arrival: 11:11 AM - Varanasi, VNS </li>
+      <li data-from="Dehradun, DED" data-to="Kochi, COK"><strong>Flight UK-535</strong><br>Departure: 3:54 PM - Dehradun, DED <br>Arrival: 6:37 PM - Kochi, COK </li>
+      <li data-from="Chandigarh, IXC" data-to="Patna, PAT"><strong>Flight IX-389</strong><br>Departure: 7:20 AM - Chandigarh, IXC <br>Arrival: 10:02 AM - Patna, PAT </li>
+      <li data-from="Kolkata, CCU" data-to="Patna, PAT"><strong>Flight SG-121</strong><br>Departure: 11:33 AM - Kolkata, CCU <br>Arrival: 12:33 PM - Patna, PAT </li>
+      <li data-from="Amritsar, ATQ" data-to="Kolkata, CCU"><strong>Flight IX-760</strong><br>Departure: 9:08 AM - Amritsar, ATQ <br>Arrival: 11:57 AM - Kolkata, CCU </li>
+      <li data-from="Hyderabad, HYD" data-to="Dehradun, DED"><strong>Flight SG-241</strong><br>Departure: 12:45 PM - Hyderabad, HYD <br>Arrival: 2:33 PM - Dehradun, DED </li>
+      <li data-from="Jaipur, JAI" data-to="Amritsar, ATQ"><strong>Flight SG-715</strong><br>Departure: 1:55 PM - Jaipur, JAI <br>Arrival: 5:08 PM - Amritsar, ATQ </li>
+      <li data-from="Patna, PAT" data-to="Delhi, DEL"><strong>Flight 6E-802</strong><br>Departure: 5:34 AM - Patna, PAT <br>Arrival: 8:01 AM - Delhi, DEL </li>
+      <li data-from="Varanasi, VNS" data-to="Bengaluru, BLR"><strong>Flight SG-479</strong><br>Departure: 6:41 AM - Varanasi, VNS <br>Arrival: 9:56 AM - Bengaluru, BLR </li>
+      <li data-from="Indore, IDR" data-to="Mumbai, BOM"><strong>Flight SG-281</strong><br>Departure: 1:10 PM - Indore, IDR <br>Arrival: 5:09 PM - Mumbai, BOM </li>
+      <li data-from="Hyderabad, HYD" data-to="Dehradun, DED"><strong>Flight UK-667</strong><br>Departure: 1:21 PM - Hyderabad, HYD <br>Arrival: 3:34 PM - Dehradun, DED </li>
+      <li data-from="Indore, IDR" data-to="Jaipur, JAI"><strong>Flight 6E-885</strong><br>Departure: 7:00 AM - Indore, IDR <br>Arrival: 10:32 AM - Jaipur, JAI </li>
+      <li data-from="Kolkata, CCU" data-to="Goa, GOI"><strong>Flight UK-705</strong><br>Departure: 3:47 PM - Kolkata, CCU <br>Arrival: 5:34 PM - Goa, GOI </li>
+      <li data-from="Chennai, MAA" data-to="Coimbatore, CJB"><strong>Flight AI-535</strong><br>Departure: 5:07 AM - Chennai, MAA <br>Arrival: 7:13 AM - Coimbatore, CJB </li>
+      <li data-from="Srinagar, SXR" data-to="Kolkata, CCU"><strong>Flight 6E-903</strong><br>Departure: 12:50 PM - Srinagar, SXR <br>Arrival: 4:45 PM - Kolkata, CCU </li>
+      <li data-from="Delhi, DEL" data-to="Chandigarh, IXC"><strong>Flight 6E-847</strong><br>Departure: 2:33 PM - Delhi, DEL <br>Arrival: 4:31 PM - Chandigarh, IXC </li>
+      <li data-from="Dehradun, DED" data-to="Nagpur, NAG"><strong>Flight SG-651</strong><br>Departure: 4:01 PM - Dehradun, DED <br>Arrival: 6:31 PM - Nagpur, NAG </li>
+      <li data-from="Nagpur, NAG" data-to="Jaipur, JAI"><strong>Flight 6E-892</strong><br>Departure: 12:13 PM - Nagpur, NAG <br>Arrival: 3:12 PM - Jaipur, JAI </li>
+      <li data-from="Delhi, DEL" data-to="Kochi, COK"><strong>Flight 6E-259</strong><br>Departure: 4:29 PM - Delhi, DEL <br>Arrival: 5:45 PM - Kochi, COK </li>
+      <li data-from="Patna, PAT" data-to="Coimbatore, CJB"><strong>Flight 6E-870</strong><br>Departure: 5:04 AM - Patna, PAT <br>Arrival: 8:34 AM - Coimbatore, CJB </li>
+      <li data-from="Lucknow, LKO" data-to="Surat, STV"><strong>Flight UK-683</strong><br>Departure: 8:35 AM - Lucknow, LKO <br>Arrival: 11:27 AM - Surat, STV </li>
+      <li data-from="Coimbatore, CJB" data-to="Delhi, DEL"><strong>Flight SG-415</strong><br>Departure: 9:25 AM - Coimbatore, CJB <br>Arrival: 12:07 PM - Delhi, DEL </li>
+      <li data-from="Mumbai, BOM" data-to="Kolkata, CCU"><strong>Flight IX-527</strong><br>Departure: 9:43 AM - Mumbai, BOM <br>Arrival: 1:38 PM - Kolkata, CCU </li>
+      <li data-from="Patna, PAT" data-to="Hyderabad, HYD"><strong>Flight UK-829</strong><br>Departure: 4:37 PM - Patna, PAT <br>Arrival: 8:07 PM - Hyderabad, HYD </li>
+      <li data-from="Mumbai, BOM" data-to="Port Blair, IXZ"><strong>Flight IX-776</strong><br>Departure: 6:16 AM - Mumbai, BOM <br>Arrival: 8:24 AM - Port Blair, IXZ </li>
+      <li data-from="Coimbatore, CJB" data-to="Nagpur, NAG"><strong>Flight IX-671</strong><br>Departure: 11:27 AM - Coimbatore, CJB <br>Arrival: 2:58 PM - Nagpur, NAG </li>
+      <li data-from="Port Blair, IXZ" data-to="Kochi, COK"><strong>Flight SG-516</strong><br>Departure: 4:31 PM - Port Blair, IXZ <br>Arrival: 8:29 PM - Kochi, COK </li>
+      <li data-from="Port Blair, IXZ" data-to="Coimbatore, CJB"><strong>Flight AI-322</strong><br>Departure: 7:20 AM - Port Blair, IXZ <br>Arrival: 10:19 AM - Coimbatore, CJB </li>
+      <li data-from="Coimbatore, CJB" data-to="Kochi, COK"><strong>Flight UK-302</strong><br>Departure: 3:25 PM - Coimbatore, CJB <br>Arrival: 4:49 PM - Kochi, COK </li>
+      <li data-from="Jaipur, JAI" data-to="Coimbatore, CJB"><strong>Flight AI-968</strong><br>Departure: 5:15 AM - Jaipur, JAI <br>Arrival: 6:41 AM - Coimbatore, CJB </li>    
+    </ul>
+  </div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get('from');
+  const to = params.get('to');
+  const departure = params.get('departure');
+  const passengers = params.get('passengers');
+
+  // Convert departure (YYYY-MM-DD) to "Thu, 12 Jun"
+  let formattedDate = "";
+  if (departure) {
+    const parts = departure.split("-");
+    const dateObj = new Date(parts[0], parts[1] - 1, parts[2]); // month is 0-based
+    formattedDate = dateObj.toDateString(); // example: "Thu Jun 12 2025"
+    const [day, month, date] = formattedDate.split(" ");
+    formattedDate = `${day}, ${date} ${month}`;
+  }
+
+  // Fill trip info
+  document.getElementById('tripDetails').innerHTML = `
+    <div>${from} - ${to}      ||
+         ${formattedDate}      ||
+          Passengers-${passengers}</div>
+  `;
+
+  // Update heading as well
+  const heading = document.querySelector('h1');
+  if (from && to && heading) {
+    heading.innerHTML = `Choose your preferred flight from <span>${from}</span> to <span>${to}</span>`;
+  }
+
+    window.onload = function () {
+    filterFlights();
+  };
+
+  function filterFlights() {
+    let fromCity = from ? from.toLowerCase() : "";
+    let toCity = to ? to.toLowerCase() : "";
+    let flights = document.querySelectorAll(".flights-list li");
+    let hasFlights = false;
+
+    flights.forEach(flight => {
+        let flightFrom = flight.getAttribute("data-from").toLowerCase();
+        let flightTo = flight.getAttribute("data-to").toLowerCase();
+
+        if ((fromCity === "" || flightFrom.includes(fromCity)) && 
+            (toCity === "" || flightTo.includes(toCity))) {
+            flight.style.display = "block";
+            hasFlights = true;
+        } else {
+            flight.style.display = "none";
+        }
+    });
+  }
+  
+  function redirectToAirplane(element) {
+    const from = element.getAttribute('data-from');
+    const to = element.getAttribute('data-to');
+    window.location.href = `airplane.html?from=${from}&to=${to}`;
+  }
+</script>
+</body>
+</html>

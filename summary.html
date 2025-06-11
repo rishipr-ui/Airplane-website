@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Review & Pay - IndiGo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f6ff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      padding: 30px 5%;
+      background-color: white;
+    }
+
+    header h1 {
+      margin-top: 25px;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    header h1 span {
+      color: green;
+    }
+
+    .trip-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .header {
+      background-color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3c3cdb;
+    }
+
+    .back-link {
+      color: #003366;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .main-container {
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .booking-details {
+      flex: 1;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .payment-sidebar {
+      width: 300px;
+      position: sticky;
+      top: 85px;
+      align-self: flex-start;
+    }
+
+    .flight-info {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .route-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .route-cities {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .route-arrow {
+      color: #666;
+      font-size: 20px;
+    }
+
+    .flight-number {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .passenger-section {
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .passenger-card {
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .passenger-name {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .passenger-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .seat-info {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      border: 1px solid #eee;
+    }
+
+    .seat-info span {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .payment-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .back-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: transparent;
+      color: #666;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      font-size: 14px;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .payment-methods {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .qr-section {
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin: 20px 0;
+      background-color: #f8f9fa;
+    }
+
+    .qr-image {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 15px;
+      display: block;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .upi-input-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .upi-input-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .upi-input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .verify-btn {
+      padding: 10px 20px;
+      background-color: #3c3cdb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .verify-btn:hover {
+      background-color: #2a2a9e;
+    }
+
+    .payment-instructions {
+      font-size: 14px;
+      color: #666;
+      margin: 15px 0;
+      text-align: left;
+    }
+
+    .payment-instructions ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    .payment-instructions li {
+      margin-bottom: 8px;
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 15px 0;
+      color: #666;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #eee;
+    }
+
+    .or-divider span {
+      padding: 0 10px;
+      background-color: white;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .price-breakdown {
+      margin-bottom: 20px;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .total-row {
+      border-top: 1px solid #eee;
+      margin-top: 10px;
+      padding-top: 10px;
+      font-weight: bold;
+      color: #333;
+      font-size: 16px;
+    }
+
+    .pay-button {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background-color: #ff6d38;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .pay-button:hover {
+      background-color: #ff5722;
+    }
+
+    .modify-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: transparent;
+      color: #3c3cdb;
+      border: 1px solid #3c3cdb;
+      border-radius: 25px;
+      font-size: 14px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .modify-button:hover {
+      background-color: #f0f6ff;
+    }
+
+    .clear-data {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="trip-info" id="tripDetails">
+      <div>Loading route...</div>
+      <div>Loading date...</div>
+      <div>Loading passengers...</div>
+    </div>
+
+    <h1>Review your booking from <span>Delhi</span> to <span>Mumbai</span></h1>
+  </header>
+
+  <div class="header">
+    <div class="logo">IndiGo ✈</div>
+    <a href="airplane.html" class="back-link">← MODIFY DETAILS</a>
+  </div>
+
+  <div id="mainContainer" class="main-container"></div>
+
+  <script>
+    function formatDate(isoString) {
+      const date = new Date(isoString);
+      return date.toLocaleString();
+    }
+
+    function calculateTotal(passengerCount) {
+      const basePrice = 4999;
+      const taxes = 750;
+      const convenienceFee = 300;
+      
+      return {
+        basePrice: basePrice * passengerCount,
+        taxes: taxes * passengerCount,
+        convenienceFee: convenienceFee,
+        total: (basePrice * passengerCount) + (taxes * passengerCount) + convenienceFee
+      };
+    }
+
+    function formatPrice(amount) {
+      return '₹' + amount.toLocaleString('en-IN');
+    }
+
+    function displaySubmissions() {
+      const container = document.getElementById('mainContainer');
+      const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+
+      if (submissions.length === 0) {
+        container.innerHTML = '<div class="no-submissions">No booking details found</div>';
+        return;
+      }
+
+      const submission = submissions[submissions.length - 1];
+      const prices = calculateTotal(submission.passengers.length);
+
+      container.innerHTML = `
+        <div class="booking-details">
+          <div class="flight-info">
+            <div class="route-header">
+              <div class="route-cities">
+                ${submission.route.from} <span class="route-arrow">→</span> ${submission.route.to}
+              </div>
+            </div>
+            <div class="flight-number">Flight 6E-185 • ${formatDate(submission.timestamp)}</div>
+          </div>
+
+          <div class="passenger-section">
+            <div class="section-title">Passenger Details</div>
+            ${displayPassengerDetails()}
+          </div>
+        </div>
+
+        <div class="payment-sidebar">
+          <div class="payment-card">
+            <div class="section-title">Price Summary</div>
+            <div class="price-breakdown">
+              <div class="price-row">
+                <span>Base Fare</span>
+                <span>${formatPrice(prices.basePrice)}</span>
+              </div>
+              <div class="price-row">
+                <span>Taxes & Surcharges</span>
+                <span>${formatPrice(prices.taxes)}</span>
+              </div>
+              <div class="price-row">
+                <span>Convenience Fee</span>
+                <span>${formatPrice(prices.convenienceFee)}</span>
+              </div>
+              <div class="price-row total-row">
+                <span>Total Amount</span>
+                <span>${formatPrice(prices.total)}</span>
+              </div>
+            </div>
+
+            <div class="payment-methods">
+              <div class="section-title">Pay Using UPI</div>
+              
+              <div class="qr-section">
+                <img src="eo.jpg" alt="UPI QR Code" class="qr-image">
+                <div class="payment-instructions">
+                  <strong>How to pay using QR code:</strong>
+                  <ol>
+                    <li>Open any UPI app on your phone</li>
+                    <li>Scan this QR code</li>
+                    <li>Verify the amount and complete payment</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="or-divider">
+                <span>OR</span>
+              </div>
+
+              <div class="upi-input-section">
+                <div class="payment-instructions">
+                  Enter your UPI ID (e.g., mobilenumber@upi)
+                </div>
+                <div class="upi-input-container">
+                  <input type="text" class="upi-input" placeholder="Enter UPI ID" id="upiInput">
+                  <button class="verify-btn" onclick="verifyUPI()">Verify & Pay</button>
+                </div>
+              </div>
+
+              <button onclick="window.location.href='airplane.html'" class="back-button">
+                ← Back to Passenger Details
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function verifyUPI() {
+      const upiId = document.getElementById('upiInput').value;
+      if (!upiId) {
+        alert('Please enter a UPI ID');
+        return;
+      }
+      
+      const submitButton = document.querySelector('.verify-btn');
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Processing...';
+      submitButton.disabled = true;
+
+      setTimeout(() => {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+        window.location.href = 'payment-success.html';
+      }, 2000);
+    }
+
+    function displayPassengerDetails() {
+      const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+      const latestSubmission = submissions[submissions.length - 1];
+      
+      if (latestSubmission) {
+        let passengerHTML = '';
+        latestSubmission.passengers.forEach((passenger, index) => {
+          const seatInfo = latestSubmission.seatSelections ? latestSubmission.seatSelections[index] : null;
+          
+          passengerHTML += `
+            <div class="passenger-card">
+              <div class="passenger-name">${passenger.firstName} ${passenger.lastName}</div>
+              <div class="passenger-info">
+                <div>Gender: ${passenger.gender}</div>
+                <div>Phone: ${passenger.phone}</div>
+                <div>Date of Birth: ${passenger.dob}</div>
+              </div>
+              ${seatInfo ? `
+                <div class="seat-info">
+                  Seat: ${seatInfo.seatType} seat in ${seatInfo.section} section
+                </div>
+              ` : ''}
+            </div>
+          `;
+        });
+        return passengerHTML;
+      }
+      return '';
+    }
+
+    function updateTripInfo() {
+      const tripDetails = document.getElementById('tripDetails');
+      const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+      const latestSubmission = submissions[submissions.length - 1];
+      
+      if (latestSubmission) {
+        tripDetails.innerHTML = `
+          <div>${latestSubmission.route.from} → ${latestSubmission.route.to}</div>
+          <div>${new Date(latestSubmission.timestamp).toLocaleDateString()}</div>
+          <div>${latestSubmission.passengers.length} Passenger(s)</div>
+        `;
+      }
+    }
+
+    // Initialize the page
+    window.onload = function() {
+      updateTripInfo();
+      displaySubmissions();
+    };
+  </script>
+</body>
+</html> 

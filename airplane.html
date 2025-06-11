@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IndiGo Passenger Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f6ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      padding: 30px 5%;
+      background-color: white;
+    }
+
+    header h1 {
+      margin-top: 25px;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    header h1 span {
+      color: green;
+    }
+
+    .trip-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .header {
+      background-color: white;
+      padding: 10px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #3c3cdb;
+    }
+
+    .back-link {
+      color: #003366;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .route-badge {
+      background-color: #00008b;
+      color: white;
+      padding: 12px 40px;
+      border-radius: 40px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      max-width: 500px;
+      margin: 30px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .caret {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .rotate {
+      transform: rotate(180deg);
+    }
+
+    .passenger-form {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="date"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .note {
+      background-color: #e6f2ff;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #003366;
+      margin-top: 20px;
+    }
+
+    #passengerSelect {
+      display: block;
+      margin: 0 auto 20px auto;
+      font-size: 16px;
+      padding: 10px;
+    }
+
+    .submit-button {
+      display: block;
+      width: 200px;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background-color: #3c3cdb;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-button:hover {
+      background-color: #2a2a9e;
+    }
+
+    .success-message {
+      text-align: center;
+      margin: 20px;
+      padding: 15px;
+      background-color: #dff0d8;
+      color: #3c763d;
+      border-radius: 4px;
+      display: none;
+    }
+
+    .view-summary-btn {
+      display: none;
+      width: 200px;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      text-decoration: none;
+      text-align: center;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .view-summary-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="trip-info" id="tripDetails">
+      <div>Loading route...</div>
+      <div>Loading date...</div>
+      <div>Loading passengers...</div>
+    </div>
+
+    <h1>Enter passenger details for your flight from <span>Delhi</span> to <span>Mumbai</span></h1>
+  </header>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">IndiGo ✈</div>
+    <a href="#" class="back-link">← BACK TO SEARCH RESULTS</a>
+  </div>
+
+  <!-- ROUTE BADGE -->
+ 
+
+  <!-- PASSENGER SELECT -->
+  <div style="text-align:center;">
+    <label for="passengerSelect"><strong>Select Number of Passengers</strong></label>
+    <select id="passengerSelect">
+      <option value="1">1 Adult</option>
+      <option value="2">2 Adults</option>
+      <option value="3">3 Adults</option>
+      <option value="4">4 Adults</option>
+      <option value="5">5 Adults</option>
+      <option value="6">6 Adults</option>
+    </select>
+  </div>
+
+  <!-- ALL FORMS WILL BE GENERATED HERE -->
+  <div id="allForms"></div>
+  
+  <!-- Submit Button -->
+  <button type="submit" class="submit-button" onclick="submitForms()">Continue</button>
+  
+  <!-- Success Message -->
+  <div id="successMessage" class="success-message">
+    Passenger details saved successfully!
+  </div>
+  
+  <!-- View Summary Link -->
+  <a href="summary.html" class="view-summary-btn" id="viewSummaryBtn">View Passenger Summary</a>
+
+  <script>
+    function updateTripInfo() {
+      const tripDetails = document.getElementById('tripDetails');
+      const flightDetails = JSON.parse(localStorage.getItem('selectedFlight') || '{}');
+      const submissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+      const latestSubmission = submissions[submissions.length - 1];
+      
+      if (flightDetails.route) {
+        tripDetails.innerHTML = `
+          <div>${flightDetails.route.from} → ${flightDetails.route.to}</div>
+          <div>${new Date(flightDetails.timestamp).toLocaleDateString()}</div>
+          <div>${latestSubmission ? latestSubmission.passengers.length : 1} Passenger(s)</div>
+        `;
+
+        // Update the header title
+        const headerTitle = document.querySelector('header h1');
+        if (headerTitle) {
+          headerTitle.innerHTML = `Enter passenger details for your flight from <span>${flightDetails.route.from}</span> to <span>${flightDetails.route.to}</span>`;
+        }
+      }
+    }
+
+    window.onload = function() {
+      updateTripInfo();
+      generateForms();
+    };
+
+    const passengerSelect = document.getElementById('passengerSelect');
+    const allForms = document.getElementById('allForms');
+    const successMessage = document.getElementById('successMessage');
+    const viewSummaryBtn = document.getElementById('viewSummaryBtn');
+
+    passengerSelect.addEventListener('change', generateForms);
+
+    function generateForms() {
+      const count = parseInt(passengerSelect.value);
+      allForms.innerHTML = ''; // Clear previous forms
+
+      for (let i = 1; i <= count; i++) {
+        const formContainer = document.createElement('div');
+        formContainer.classList.add('form-container');
+
+        formContainer.innerHTML = `
+          <div class="section-header" onclick="togglePassengerForm('form${i}', 'caret${i}')">
+            <span>Adult ${i}</span>
+            <span id="caret${i}" class="caret">⌃</span>
+          </div>
+
+          <form id="form${i}" class="passenger-form">
+            <div class="radio-group">
+              <label><input type="radio" name="gender${i}" value="male" required> Male</label>
+              <label><input type="radio" name="gender${i}" value="female" required> Female</label>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" name="firstName${i}" required pattern="[A-Za-z ]+" title="Please enter a valid name (letters and spaces only)">
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" name="lastName${i}" required pattern="[A-Za-z ]+" title="Please enter a valid name (letters and spaces only)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" name="phone${i}" placeholder="e.g., 9876543210" pattern="[0-9]{10}" required title="Please enter a 10-digit phone number">
+            </div>
+
+            <div class="form-group">
+              <label>Date of Birth (Optional)</label>
+              <input type="date" name="dob${i}">
+              <small>* Please enter date in DD-MM-YYYY format</small>
+            </div>
+
+           
+          </form>
+        `;
+
+        allForms.appendChild(formContainer);
+      }
+    }
+
+    function togglePassengerForm(formId, caretId) {
+      const allForms = document.querySelectorAll('.passenger-form');
+      const allCarets = document.querySelectorAll('.caret');
+
+      allForms.forEach(form => {
+        if (form.id === formId) {
+          const isVisible = form.style.display === 'block';
+          form.style.display = isVisible ? 'none' : 'block';
+        } else {
+          form.style.display = 'none';
+        }
+      });
+
+      allCarets.forEach(caret => {
+        if (caret.id === caretId) {
+          const targetForm = document.getElementById(formId);
+          if (targetForm.style.display === 'block') {
+            caret.classList.add('rotate');
+          } else {
+            caret.classList.remove('rotate');
+          }
+        } else {
+          caret.classList.remove('rotate');
+        }
+      });
+    }
+
+    async function submitForms() {
+      // Get all forms
+      const forms = document.querySelectorAll('.passenger-form');
+      let isValid = true;
+
+      // Check if all forms are valid
+      forms.forEach(form => {
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        return;
+      }
+
+      // Collect data from all forms
+      const passengersData = [];
+      forms.forEach((form, index) => {
+        const passengerNumber = index + 1;
+        passengersData.push({
+          firstName: form.querySelector(`[name="firstName${passengerNumber}"]`).value,
+          lastName: form.querySelector(`[name="lastName${passengerNumber}"]`).value,
+          gender: form.querySelector(`[name="gender${passengerNumber}"]:checked`).value,
+          phone: form.querySelector(`[name="phone${passengerNumber}"]`).value,
+          dob: form.querySelector(`[name="dob${passengerNumber}"]`).value || 'Not provided'
+        });
+      });
+
+      try {
+        // Show loading state
+        const submitButton = document.querySelector('.submit-button');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Saving...';
+        submitButton.disabled = true;
+
+        // Save to localStorage with timestamp
+        const submission = {
+          timestamp: new Date().toISOString(),
+          passengers: passengersData,
+          route: {
+            from: 'DEL',
+            to: 'BOM'
+          }
+        };
+
+        // Get existing submissions or initialize empty array
+        const existingSubmissions = JSON.parse(localStorage.getItem('passengerSubmissions') || '[]');
+        existingSubmissions.push(submission);
+        localStorage.setItem('passengerSubmissions', JSON.stringify(existingSubmissions));
+
+        // Redirect to seat selection page
+        window.location.href = 'seat.html';
+
+      } catch (error) {
+        alert('Error saving passenger details: ' + error.message);
+      } finally {
+        // Restore button state
+        const submitButton = document.querySelector('.submit-button');
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    }
+  </script>
+
+</body>
+</html>
